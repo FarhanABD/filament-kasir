@@ -24,7 +24,9 @@ class OrderResource extends Resource
 {
     protected static ?string $model = Order::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?int $navigationSort = 2;
+
+    protected static ?string $navigationIcon = 'heroicon-s-shopping-cart';
 
     public static function form(Form $form): Form
     {
@@ -52,7 +54,6 @@ class OrderResource extends Resource
                         ->email()
                         ->nullable()
                         ->maxLength(255),
-
                         Forms\Components\DatePicker::make('ultah')
                         ->nullable(),
                         Forms\Components\TextInput::make('phone')
