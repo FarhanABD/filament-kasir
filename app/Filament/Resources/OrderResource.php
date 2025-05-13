@@ -23,11 +23,8 @@ use App\Filament\Resources\OrderResource\RelationManagers;
 class OrderResource extends Resource
 {
     protected static ?string $model = Order::class;
-
     protected static ?int $navigationSort = 2;
-
     protected static ?string $navigationIcon = 'heroicon-s-shopping-cart';
-
     public static function form(Form $form): Form
     {
         return $form
@@ -63,7 +60,6 @@ class OrderResource extends Resource
                         ->default(null),
                         ])
                     ]),
-
                     // Repeater 
                     Forms\Components\Section::make('Produk Dipesan')->schema([
                         self::getItemRepeater()
@@ -135,8 +131,6 @@ class OrderResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('name')
-                    ->searchable(),
                 Tables\Columns\TextColumn::make('total_price')
                     ->numeric()
                     ->sortable(),
@@ -173,7 +167,7 @@ class OrderResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            
         ];
     }
 

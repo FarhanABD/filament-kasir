@@ -7,11 +7,11 @@
         <div class="flex-grow">
             <div class="grid grid-cols-8 sm:grid-cols-3 md:grid-cols-8 lg:grid-cols- gap-4">
                 @foreach ($products as $item )
-                <div class="bg-gray-100 dark:bg-gray-700 p-4 rounded-lg shadow cursor-pointer">
+                <div wire:click="addToOrder({{ $item->id }})" class="bg-gray-100 dark:bg-gray-700 p-4 rounded-lg shadow cursor-pointer">
                     <img src="{{ $item->image_url }}"
                         alt="Product Image" class="w-full h-16 object-cover rounded-lg mb-2">
                     <h3 class="text-sm font-semibold">{{ $item->name }}</h3>
-                    <p class="text-gray-600 dark:text-gray-400 text-xs">{{ $item->price }}</p>
+                    <p class="text-gray-600 dark:text-gray-400 text-xs">RP {{ number_format($item->price, 0, ',', '.') }}</p>
                     <p class="text-gray-600 dark:text-gray-400 text-xs">{{ $item->stock }}</p>
                 </div>
                 @endforeach
@@ -22,29 +22,35 @@
         </div>
     </div>
     <div class="md:col-span-1 bg-white dark:bg-gray-800 shadow-md rounded-lg p-6">
+        @if (count($order_items) > 0)
         <div class="py-4">
-            <h3 class="text-lg font-semibold text-center">Total: Rp 25.0000</h3>
-        </div>
+            <h3 class="text-lg font-semibold text-center">Total: RP {{ number_format($this->calculateTotal(), 0, ',', '.') }}</h3>
+        </div>    
+        @endif
+        @foreach ($order_items as $item)
         <div class="mb-4">
             <div class="flex justify-between items-center bg-gray-100 dark:bg-gray-700 p-4 rounded-lg shadow">
                 <div class="flex items-center">
-                    <img src="https://images.unsplash.com/photo-1464226184884-fa280b87c399?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Product Image"
+                    {{-- gunakan [ ] untuk menampilkan array pada blade & gunakan "->" untuk menmpilkan object / 1 value --}}
+                    <img src="{{ $item['image_url'] }}" alt="Product Image"
                         class="w-10 h-10 object-cover rounded-lg mr-2">
                     <div class="px-2">
-                        <h3 class="text-sm font-semibold">Nama</h3>
-                        <p class="text-gray-600 dark:text-gray-400 text-xs">Rp 10.000</p>
+                        <h3 class="text-sm font-semibold">{{ $item['name'] }}</h3>
+                        <p class="text-gray-600 dark:text-gray-400 text-xs">RP {{ number_format($item['price'], 0, ',', '.') }}</p>
                     </div>
                 </div>
                 <div class="flex items-center">
-                    <x-filament::button color="warning">-</x-filament::button>
-                    <span class="px-4">1</span>
-                    <x-filament::button color="success">+</x-filament::button>
+                    <x-filament::button color="warning" wire:click="decreaseQty({{ $item['product_id'] }})">-</x-filament::button>
+                    <span class="px-4">{{ $item['quantity'] }}</span>
+                    <x-filament::button color="success" wire:click="increaseQty({{ $item['product_id'] }})">+</x-filament::button>
                 </div>
             </div>
         </div>
-        <form>
+        @endforeach
+        <form wire:submit="checkout">
             {{ $this->form }}
-            <x-filament::button type="submit" class="w-full bg-red-500 mt-3 text-white py-2 rounded">Checkout</x-filament::button>
+            <x-filament::button 
+            type="submit" class="w-full bg-red-500 mt-3 text-white py-2 rounded">Checkout</x-filament::button>
         </form>
         <div class="mt-2">
         </div>

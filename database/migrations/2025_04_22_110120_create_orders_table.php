@@ -15,9 +15,6 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('email');
-            $table->enum('gender',['cowo','cewek']);
-            $table->string('phone')->nullable();
-            $table->date('ultah')->nullable();
             $table->integer('total_price');
             $table->text('note')->nullable();
             $table->foreignId('payment_method_id')->nullable()->constrained('payment_methods')->nullOnDelete();

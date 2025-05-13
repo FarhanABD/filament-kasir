@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class Order extends Model
 {
     use HasFactory;
-    protected $fillable = ['gender', 'ultah','payment_method_id', 'total_price','name', 'email', 'phone','paid_amount','change_amount','note'];
+    protected $fillable = ['ultah','payment_method_id', 'total_price','name', 'phone','paid_amount','change_amount','note'];
     public function paymentMethod(): BelongsTo
     {
         return $this->belongsTo(PaymentMethod::class);
