@@ -26,21 +26,21 @@ class ListProducts extends ListRecords
               ->label('upload file')  
             ])
             ->action(function (array $data) {
-                $file = public_path('storage/'.$data['attachment']);
-
+                $file = storage_path('app/public/' . $data['attachment']); // perbaikan path
+            
                 try {
                     Excel::import(new ProductImport(), $file);
                     Notification::make()
-                    ->title('Product berhasil di import')
-                    ->success()
-                    ->send();
+                        ->title('Product berhasil di import')
+                        ->success()
+                        ->send();
                 } catch (\Exception $e){
                     Notification::make()
-                    ->title('Product gagal di import')
-                    ->danger()
-                    ->send();
+                        ->title('Import gagal: ' . $e->getMessage())
+                        ->danger()
+                        ->send();
                 }
-            })
+            })            
             ->icon('heroicon-s-arrow-up-tray'),
             Action::make('Download Template')
             ->url(route('download-template'))
