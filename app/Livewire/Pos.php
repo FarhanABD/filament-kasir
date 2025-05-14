@@ -27,6 +27,7 @@ class Pos extends Component implements HasForms
     public $selectedPaymentMethod;
     public $paid_amount;
     public $change_amount;
+    protected $listeners = ['scanResult' => 'handleScanResult'];    
 
     // function untuk render halaman
     public function render()
@@ -44,13 +45,6 @@ class Pos extends Component implements HasForms
         ->schema([
             Forms\Components\Section::make('Form Checkout') 
             ->schema([
-                // Forms\Components\Select::make('gender')
-                //     ->nullable()
-                //     ->options([
-                //         'cowo' => 'Laki-laki',  
-                //         'cewek' => 'Perempuan',  
-                //     ]),
-                
                 // Paid amount - hanya muncul jika is_cash = true
                 Forms\Components\TextInput::make('paid_amount')
                 ->label('Jumlah Uang')
@@ -269,6 +263,18 @@ public function decreaseQty($product_id){
         $this->order_items = [];
         session()->forget('orderItems');
         redirect()->to('admin/orders');        
+    }
+
+    public function handleScanResult($decodeText){
+        $product = Product::where('barcode', $decodeText)->first();
+        if ($product) {
+            $this->addToOrder($product->id);
+        } else {
+            Notification::make()
+                ->title('Produk Tidak Ditemukan', $decodeText)
+                ->danger()
+                ->send();
+        }
     }
     
     
