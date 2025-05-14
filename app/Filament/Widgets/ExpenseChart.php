@@ -2,17 +2,17 @@
 
 namespace App\Filament\Widgets;
 
-use App\Models\Order;
+use App\Models\Expense;
+use Filament\Widgets\ChartWidget;
+use Flowframe\Trend\TrendValue;
 use Flowframe\Trend\Trend;
 use Illuminate\Support\Carbon;
-use Flowframe\Trend\TrendValue;
-use Filament\Widgets\ChartWidget;
 
-class OmsetChart extends ChartWidget
+class ExpenseChart extends ChartWidget
 {
-    protected static ?string $heading = 'Total Omset';
-    protected static ?int $sort = 1;
-    public ?string $filter = 'today';
+    protected static ?string $heading = 'Total Pengeluaran';
+    protected static ?int $sort = 2;
+    public ?string $filter = 'month';
 
     protected function getData(): array
     {
@@ -40,7 +40,7 @@ class OmsetChart extends ChartWidget
             ],   
         };
 
-        $query =   $data = Trend::model(Order::class)
+        $query =   $data = Trend::model(Expense::class)
         ->between(
             start: $dateRange['start'],
             end: $dateRange['end'],
@@ -56,7 +56,7 @@ class OmsetChart extends ChartWidget
             $data = $query->perHour();
         }
 
-        $data = $data->sum('total_price');
+        $data = $data->sum('amount');
 
     $labels = $data->map(function(TrendValue $value) use ($dateRange) {
        $date = Carbon::parse($value->date);
@@ -70,10 +70,10 @@ class OmsetChart extends ChartWidget
     return [
         'datasets' => [
             [
-               'label' => 'Omset ' . $this->getFilters()[$activeFilter],
+               'label' => 'Pengeluaran ' . $this->getFilters()[$activeFilter],
                 'data' => $data->map(fn (TrendValue $value) => $value->aggregate),
-                'borderColor' => 'rgb(75, 192, 192)', // Hijau
-                'backgroundColor' => 'rgba(75, 192, 192, 0.2)',
+                'borderColor' => 'rgb(255, 99, 132)', // Merah
+                'backgroundColor' => 'rgba(255, 99, 132, 0.2)',
                 'fill' => true,
             ],
         ],
