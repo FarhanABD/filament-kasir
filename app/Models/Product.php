@@ -39,7 +39,6 @@ class Product extends Model
             $slug = $originalSlug . '-' . $counter;
             $counter++;
         }
-
         return $slug;
     }
 
@@ -49,5 +48,9 @@ class Product extends Model
 
     public function scopeSearch($query, $value){
         $query->where('name', 'like', '%' . $value . '%');
+    }
+
+    public function orderProducts(): HasMany{
+        return $this->hasMany(OrderProduct::class, 'product_id');
     }
 }
