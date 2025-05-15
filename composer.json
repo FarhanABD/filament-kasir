@@ -6,11 +6,12 @@
     "license": "MIT",
     "require": {
         "php": "^8.1",
+        "dedoc/scramble": "^0.12.19",
         "filament/filament": "3.3",
         "flowframe/laravel-trend": "^0.4.0",
         "guzzlehttp/guzzle": "^7.2",
         "laravel/framework": "^10.0",
-        "laravel/sanctum": "^3.2",
+        "laravel/sanctum": "^3.3",
         "laravel/tinker": "^2.8",
         "maatwebsite/excel": "^3.1"
     },
